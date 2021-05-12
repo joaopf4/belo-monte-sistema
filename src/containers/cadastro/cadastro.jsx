@@ -7,12 +7,12 @@ import FormCadastro from "../../components/FormCadastro/formCadastro";
 function CadastroFunc() {
   const [vaca, setVaca] = useState({
     id: "",
-    prenha: true ? {tempoPrenha: 'date', dataExame: 'date'} : {temBezerro: false},
-    bezerroAoPe: true ? {mesNascimento: 'date', sexo: ''} : false,
-    idade: "data atual - data nascimento",
+    prenha: false, // true ? {tempoPrenha: 'date', dataExame: 'date'} : {temBezerro: false},
+    bezerroAoPe: false, // true ? {mesNascimento: 'date', sexo: ''} : false,
+    idade: 0,
     observacoes: "",
-    IEP: 'data atual - data nasc. ultimo bezerro',
-    morte: true && 'mandar id pra tabela de falecidos' 
+    IeP: 0,
+    // morte: true && 'mandar id pra tabela de falecidos' 
   });
   const [listaVacas, setListaVacas] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -31,9 +31,7 @@ function CadastroFunc() {
               bezerroAoPe: item.data().bezerroAoPe,
               idade: item.data().idade,
               observacoes: item.data().observacoes,
-              IEP: item.data().IEP,
-              morte: item.data().morte,
-              descontoIR: item.data().descontoIR,
+              IeP: item.data().IeP,
             })
           })
           setListaVacas(lista);
@@ -41,54 +39,6 @@ function CadastroFunc() {
     }
     buscaVacas();
   }, []);
-
-  // async function calculaIR(funcionario) {
-  //   const deducao = 164.56;
-  //   const salarioBaseIR =
-  //     funcionario.salarioBruto -
-  //     funcionario.descontoPrev -
-  //     deducao * funcionario.dependentes;
-  //   setVaca((prevState) => ({
-  //     ...prevState,
-  //     salarioBase: salarioBaseIR,
-  //   }));
-
-  //   let aliquota = 0;
-  //   let parcelaDeducao = 0;
-
-  //   if (salarioBaseIR <= 1903.98) {
-  //     aliquota = 0;
-  //     parcelaDeducao = 0;
-  //   } else if (salarioBaseIR > 1903.98 && salarioBaseIR <= 2826.65) {
-  //     parcelaDeducao = 142.8;
-  //     aliquota = 0.075;
-  //   } else if (salarioBaseIR > 2826.65 && salarioBaseIR <= 3751.05) {
-  //     parcelaDeducao = 354.8;
-  //     aliquota = 0.15;
-  //   } else if (salarioBaseIR > 3751.05 && salarioBaseIR <= 4664.68) {
-  //     parcelaDeducao = 636.13;
-  //     aliquota = 0.225;
-  //   } else if (salarioBaseIR > 4664.68) {
-  //     parcelaDeducao = 869.36;
-  //     aliquota = 0.275;
-  //   }
-  //   const descontoIRRF = salarioBaseIR * aliquota - parcelaDeducao;
-  //   setVaca((prevState) => ({
-  //     ...prevState,
-  //     descontoIR: descontoIRRF.toFixed(2),
-  //   }));
-  //   await firebase
-  //     .firestore()
-  //     .collection("funcionarios")
-  //     .doc(funcionario.cpf)
-  //     .set({
-  //       ...funcionario,
-  //       descontoIR: descontoIRRF.toFixed(2),
-  //       salarioBase: salarioBaseIR,
-  //     });
-
-  //   return descontoIRRF;
-  // };
 
   return (
     <Cadastro>

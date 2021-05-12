@@ -7,9 +7,8 @@ export default function FormCadastro({
   edit,
   vaca,
   setVaca,
-  calculaIR,
   setEdit,
-  listaFunc
+  listaVacas
 }) {
 
   const handleChange = (e) => {
@@ -18,68 +17,67 @@ export default function FormCadastro({
       ...prevState,
       [id]: value,
     }));
+    console.log(vaca);
   };
 
-  const handleCpfMask = (e) => {
-    const { id, value } = e.target;
+  const handleIeP = (e) => {
+    const today = new Date();
+    const lastBabyBorn = new Date(e.target.value);
+    console.log('hoje--->', today, 'nasc bezerro --->', lastBabyBorn)
+    let IePmilisecs = today - lastBabyBorn;
+    const IePdays = ((IePmilisecs/(60*60*24*1000)) % 365).toFixed(0);
 
-    let newCPF = value;
-    newCPF = newCPF.replace(/\D/g, "");
-    newCPF = newCPF.replace(/(\d{3})(\d)/, "$1.$2");
-    newCPF = newCPF.replace(/(\d{3})(\d)/, "$1.$2");
-    newCPF = newCPF.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    setVaca((prevState) => ({
+      ...prevState,
+      IeP: IePdays,
+    }));
+    
+  }
 
-    if (newCPF.length < 15) {
-      setVaca((prevState) => ({
-        ...prevState,
-        [id]: value,
-        cpf: newCPF,
-      }));
-    }
-  };
-
-  async function cadastraFuncionario(e) {
+  async function cadastraVaca(e) {
     e.preventDefault();
-    const funcCadastrado = listaFunc.some(
-      (func) => func.id === vaca.cpf
+    const vacaCadastrada = listaVacas.some(
+      (vacaBanco) => vacaBanco.id === vaca.id
     );
 
-    if (funcCadastrado) {
-      toast.warning("Este cpf já está cadastrado!");
+    if (vacaCadastrada) {
+      toast.warning(`A vaca ${vaca.id} já está cadastrada!`);
       return;
     }
 
     await firebase
       .firestore()
-      .collection("funcionarios")
-      .doc(vaca.cpf)
+      .collection("vacas")
+      .doc(vaca.id)
       .set({
-        nome: vaca.nome,
-        cpf: vaca.cpf,
-        salarioBruto: Number(vaca.salarioBruto),
-        descontoPrev: Number(vaca.descontoPrev),
-        dependentes: Number(vaca.dependentes),
+        id: vaca.id,
+        prenha: vaca.prenha,
+        bezerroAoPe: vaca.bezerroAoPe,
+        idade: vaca.idade,
+        observacoes: vaca.observacoes,
+        IeP: vaca.IeP,
       })
       .then(async () => {
         await firebase
         .firestore()
-        .collection("funcionarios")
-        .doc(vaca.cpf)
+        .collection("vacas")
+        .doc(vaca.id)
         .get()
-        .then((snapshot) => {
-          calculaIR(snapshot.data());
-        });
+        // .then((snapshot) => {
+        //   calculaIR(snapshot.data());
+        // });
         setVaca({
-          nome:'',
-          cpf:'',
-          salarioBruto:'',
-          descontoPrev:'',
-          dependentes:''
+          id: "",
+          prenha: false, 
+          bezerroAoPe: false, 
+          idade: 0,
+          observacoes: "",
+          IeP: 0,
         });
         toast.success("Vaca inserida com sucesso!");
       })
       .catch((error) => {
-        toast.error("Não foi possível cadastrar o funcionário.", error);
+        toast.error("Não foi possível cadastrar essa vaca.", error);
       });
   };
 
@@ -87,7 +85,7 @@ export default function FormCadastro({
     e.preventDefault();
     await firebase
     .firestore()
-    .collection("funcionarios")
+    .collection("vacas")
     .doc(vaca.cpf)
     .update({
       nome: vaca.nome,
@@ -97,13 +95,13 @@ export default function FormCadastro({
       dependentes: vaca.dependentes
     })
     .then(() => {
-      calculaIR(vaca);
       setVaca({
-        nome:'',
-        cpf:'',
-        salarioBruto:'',
-        descontoPrev:'',
-        dependentes:''
+        id: "",
+        prenha: false, 
+        bezerroAoPe: false,
+        idade: 0,
+        observacoes: "",
+        IeP: 0,
       })
       toast.success('Funcionário atualizado com sucesso');
       setEdit(!edit);
@@ -116,65 +114,105 @@ export default function FormCadastro({
 
   return (
     <FormContainer>
-    <form onSubmit={!edit ? cadastraFuncionario : efetuaEdicao}>
-      <label htmlFor="nome">ID:</label>
+    <form onSubmit={!edit ? cadastraVaca : efetuaEdicao}>
+      <label htmlFor="id">ID:</label>
       <Input>
         <input
-          name="nome"
+          name="id"
           required
           type="text"
-          id="nome"
-          value={vaca.nome}
+          id="id"
+          value={vaca.id}
           onChange={handleChange}
-          placeholder="Nome"
+          placeholder="ID"
         />
       </Input>
-      <label htmlFor="cpf">CPF:</label>
+
+      <label >Prenha:</label>
+      <div style={{alignSelf: 'flex-start', margin: '20px'}}>
+        <input
+          type="radio"
+          name="prenha"
+          required
+          id="prenha"
+          onChange={() => setVaca((prevState) => ({
+            ...prevState,
+            prenha: true
+          }))}
+        />
+          <label htmlFor="prenha">Sim</label> <br/><br/>
+        <input
+          type="radio"
+          name="prenha"
+          required
+          id="nãoprenha"
+          onChange={() => setVaca((prevState) => ({
+            ...prevState,
+            prenha: false
+          }))}
+        />
+          <label htmlFor="nãoprenha">Não</label>
+      </div>
+
+      <label htmlFor="salarioBruto">Bezerro ao Pé:</label>
+      <div style={{alignSelf: 'flex-start', margin: '20px'}}>
+        <input
+          type="radio"
+          name="temBezerro"
+          required
+          id="bezerro"
+          onChange={() => setVaca((prevState) => ({
+            ...prevState,
+            bezerroAoPe: true
+          }))}
+        />
+          <label htmlFor="bezerro">Sim</label> <br/><br/>
+          {
+            vaca.bezerroAoPe === true && 
+            <>
+            <label htmlFor="IeP">Data nascimento do mais recente?</label>
+            <input
+              type="date"
+              name="IeP"
+              required
+              id="IeP"
+              onChange={handleIeP}
+            /> <br/>
+            </>
+          }
+        <input
+          type="radio"
+          name="temBezerro"
+          required
+          id="semBezerro"
+          onChange={() => setVaca((prevState) => ({
+            ...prevState,
+            bezerroAoPe: false
+          }))}
+        />
+          <label htmlFor="semBezerro">Não</label>
+      </div>
+
+      <label htmlFor="idade">Idade (em meses):</label>
       <Input>
         <input
-          name="cpf"
+          name="idade"
           required
+          type="number"
+          id="idade"
+          value={vaca.idade}
+          onChange={handleChange}
+        />
+      </Input>
+      <label htmlFor="observacoes">Observações</label>
+      <Input>
+        <input
+          name="observacoes"
           type="text"
-          id="cpf"
-          value={vaca.cpf}
-          onChange={handleCpfMask}
-          placeholder="000.000.000-00"
-        />
-      </Input>
-      <label htmlFor="salarioBruto">Salário Bruto:</label>
-      <Input>
-        <input
-          name="salarioBruto"
-          required
-          type="number"
-          id="salarioBruto"
-          value={vaca.salarioBruto}
+          id="observacoes"
+          value={vaca.observacoes}
           onChange={handleChange}
-          placeholder="Só numeros(0000.00)"
-        />
-      </Input>
-      <label htmlFor="descontoPrev">Desconto da previdência:</label>
-      <Input>
-        <input
-          name="descontoPrev"
-          required
-          type="number"
-          id="descontoPrev"
-          value={vaca.descontoPrev}
-          onChange={handleChange}
-          placeholder="Só numeros(0000.00)"
-        />
-      </Input>
-      <label htmlFor="dependentes">Número de dependentes:</label>
-      <Input>
-        <input
-          name="dependentes"
-          required
-          type="number"
-          id="dependentes"
-          value={vaca.dependentes}
-          onChange={handleChange}
-          placeholder="Só numeros"
+          placeholder="Informações extras sobre a vaca"
         />
       </Input>
       <Button type="submit">{!edit ? 'Cadastrar' : 'Editar'}</Button>
