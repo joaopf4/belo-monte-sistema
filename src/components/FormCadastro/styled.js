@@ -18,6 +18,8 @@ export const Input = styled.div`
   margin: 0px 0px 22px 0px;
   display: flex;
   align-items: inherit;
+  flex-direction: column;
+  justify-content: center;
   background-color: white;
   :last-of-type {
     margin-bottom: 40px;

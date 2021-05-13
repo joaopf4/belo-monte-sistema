@@ -1,49 +1,50 @@
 import { TabelaFuncs, TableDiv } from "./styled";
 import { toast } from "react-toastify";
-import firebase from "./../../firebaseConnection"
+import firebase from "../../services/firebaseConnection"
 
 export default function Tabela({
   listaVacas,
   edit,
   setEdit,
-  setFuncionario,
+  setVaca,
 }) {
 
   async function excluirFuncionario(id) {
-    if (window.confirm('Deseja exlcuir este funcionário da lista?')) {
+    if (window.confirm('Deseja exlcuir esta vaca dos seus dados?')) {
       setEdit(false);
-      setFuncionario({
-        nome:'',
-        cpf:'',
-        salarioBruto:'',
-        descontoPrev:'',
-        dependentes:''
+      setVaca({
+        id: "",
+        prenha: false, 
+        bezerroAoPe: false,
+        idade: 0,
+        observacoes: "",
+        IeP: null,
       });
       await firebase
         .firestore()
-        .collection("funcionarios")
+        .collection("vacas")
         .doc(id)
         .delete()
         .then(() => {
-          toast.info("Funcionário excluído");
+          toast.info("Vaca excluída");
         });
     }
   };
 
-  async function editarFuncionario(id) {
+  async function editarVaca(id) {
     setEdit(true);
     await firebase
     .firestore()
-    .collection("funcionarios")
+    .collection("vacas")
     .doc(id)
     .get()
     .then((snapshot) => {
-      setFuncionario({
-        nome: snapshot.data().nome,
-        cpf: snapshot.data().cpf,
-        salarioBruto: snapshot.data().salarioBruto,
-        descontoPrev: snapshot.data().descontoPrev,
-        dependentes: snapshot.data().dependentes
+      setVaca({
+        id: snapshot.data().id,
+        prenha: snapshot.data().prenha,
+        bezerroAoPe: snapshot.data().bezerroAoPe,
+        idade: snapshot.data().idade,
+        observacoes: snapshot.data().observacoes,
       })
     })
   }
@@ -56,9 +57,9 @@ export default function Tabela({
             <th>ID</th>
             <th>Prenha</th>
             <th>Bezerro ao Pé</th>
-            <th>Idade</th>
+            <th>Idade (meses)</th>
             <th>Observações</th>
-            <th>IEP</th>
+            <th>IeP(dias)</th>
             <th>Editar</th>
             <th>Morte?</th>
             <th>Excluir</th>
@@ -66,40 +67,53 @@ export default function Tabela({
         </thead>
         {listaVacas.length !== 0 && (
           <tbody>
-            {listaVacas.map((func) => {
+            {listaVacas
+            .sort(function(a, b) {
+              const vacaA = Number(a.id)
+              const vacaB = Number(b.id)
+              let comparison = 0;
+              if(vacaA > vacaB){
+                comparison = 1;
+              } else if (vacaA < vacaB) {
+                comparison = -1;
+              }
+              return comparison
+            })
+            .map((vaca) => {
               return (
-                <tr key={func.id}>
-                  <td>{func.nome}</td>
-                  <td>{func.cpf}</td>
-                  <td>{func.salarioBruto}</td>
-                  <td>{func.descontoPrev}</td>
-                  <td>{func.dependentes}</td>
-                  <td>{func.salarioBase}</td>
-                  <td>{func.descontoIR}</td>
+                <tr key={vaca.id}>
+                  <td>{vaca.id}</td>
+                  <td>{vaca.prenha === true ? 'Cheia (sim)' : 'Vazia(nao)'}</td>
+                  <td>{vaca.bezerroAoPe === true ? 'Sim' : 'Não'}</td>
+                  <td>{vaca.idade}</td>
+                  <td>{vaca.observacoes}</td>
+                  <td>{vaca.IeP}</td>
                   <td>
                     {!edit ? (
-                      <button onClick={() => editarFuncionario(func.id)}>
+                      <button onClick={() => editarVaca(vaca.id)}>
                         Editar
                       </button>
                     ) : (
                       <button
-                        onClick={() => {
-                          setEdit(false);
-                          setFuncionario({
-                            nome: "",
-                            cpf: "",
-                            salarioBruto: "",
-                            descontoPrev: "",
-                            dependentes: "",
-                          });
-                        }}
+                      onClick={() => {
+                        setEdit(false);
+                        setVaca({
+                          id: "",
+                          prenha: false, 
+                          bezerroAoPe: false, 
+                          idade: 0,
+                          observacoes: "",
+                          IeP: null,
+                        });
+                      }}
                       >
                         Cancelar
                       </button>
                     )}
                   </td>
+                  <td><button>Morreu</button></td>
                   <td>
-                    <button onClick={() => excluirFuncionario(func.id)}>
+                    <button onClick={() => excluirFuncionario(vaca.id)}>
                       X
                     </button>
                   </td>
