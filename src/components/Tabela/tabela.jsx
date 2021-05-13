@@ -1,24 +1,24 @@
 import { TabelaFuncs, TableDiv } from "./styled";
 import { toast } from "react-toastify";
-import firebase from "./../../firebaseConnection"
+import firebase from "../../services/firebaseConnection"
 
 export default function Tabela({
   listaVacas,
   edit,
   setEdit,
-  setFuncionario,
+  setVaca,
 }) {
 
   async function excluirFuncionario(id) {
     if (window.confirm('Deseja exlcuir esta vaca dos seus dados?')) {
       setEdit(false);
-      setFuncionario({
+      setVaca({
         id: "",
         prenha: false, 
         bezerroAoPe: false,
         idade: 0,
         observacoes: "",
-        IeP: 0,
+        IeP: null,
       });
       await firebase
         .firestore()
@@ -39,7 +39,7 @@ export default function Tabela({
     .doc(id)
     .get()
     .then((snapshot) => {
-      setFuncionario({
+      setVaca({
         id: snapshot.data().id,
         prenha: snapshot.data().prenha,
         bezerroAoPe: snapshot.data().bezerroAoPe,
@@ -67,7 +67,19 @@ export default function Tabela({
         </thead>
         {listaVacas.length !== 0 && (
           <tbody>
-            {listaVacas.map((vaca) => {
+            {listaVacas
+            .sort(function(a, b) {
+              const vacaA = Number(a.id)
+              const vacaB = Number(b.id)
+              let comparison = 0;
+              if(vacaA > vacaB){
+                comparison = 1;
+              } else if (vacaA < vacaB) {
+                comparison = -1;
+              }
+              return comparison
+            })
+            .map((vaca) => {
               return (
                 <tr key={vaca.id}>
                   <td>{vaca.id}</td>
@@ -85,12 +97,13 @@ export default function Tabela({
                       <button
                       onClick={() => {
                         setEdit(false);
-                        setFuncionario({
-                          nome: "",
-                          cpf: "",
-                          salarioBruto: "",
-                          descontoPrev: "",
-                          dependentes: "",
+                        setVaca({
+                          id: "",
+                          prenha: false, 
+                          bezerroAoPe: false, 
+                          idade: 0,
+                          observacoes: "",
+                          IeP: null,
                         });
                       }}
                       >

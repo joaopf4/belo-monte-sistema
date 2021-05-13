@@ -1,6 +1,6 @@
 import React from "react";
 import { FormContainer, Input, Button } from "./styled";
-import firebase from "./../../firebaseConnection";
+import firebase from "../../services/firebaseConnection";
 import { toast } from "react-toastify";
 
 export default function FormCadastro({
@@ -63,16 +63,13 @@ export default function FormCadastro({
         .collection("vacas")
         .doc(vaca.id)
         .get()
-        // .then((snapshot) => {
-        //   calculaIR(snapshot.data());
-        // });
         setVaca({
           id: "",
           prenha: false, 
           bezerroAoPe: false, 
           idade: 0,
           observacoes: "",
-          IeP: 0,
+          IeP: null,
         });
         toast.success("Vaca inserida com sucesso!");
       })
@@ -86,28 +83,30 @@ export default function FormCadastro({
     await firebase
     .firestore()
     .collection("vacas")
-    .doc(vaca.cpf)
+    .doc(vaca.id)
     .update({
-      nome: vaca.nome,
-      cpf: vaca.cpf,
-      salarioBruto: vaca.salarioBruto,
-      descontoPrev: vaca.descontoPrev,
-      dependentes: vaca.dependentes
+      id: vaca.id,
+      prenha: vaca.prenha,
+      bezerroAoPe: vaca.bezerroAoPe,
+      idade: vaca.idade,
+      observacoes: vaca.observacoes,
     })
     .then(() => {
+      handleIeP(e)
       setVaca({
         id: "",
         prenha: false, 
         bezerroAoPe: false,
         idade: 0,
         observacoes: "",
-        IeP: 0,
+        IeP: null,
       })
-      toast.success('Funcionário atualizado com sucesso');
+      toast.success('Vaca atualizada com sucesso');
       setEdit(!edit);
     })
-    .catch(() => {
-      toast.error('Erro ao atualizar funcionário. O seu cpf não pode ser alterado');
+    .catch((error) => {
+      console.log(error)
+      toast.error('Erro ao atualizar a vaca. O seu id não pode ser alterado', error);
     })
   }
 

@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { Cadastro } from "./styled";
-import firebase from "./../../firebaseConnection";
+import React, { useState, useEffect, useContext } from "react";
+import firebase from "../../services/firebaseConnection";
+import { AuthContext } from '../../contexts/auth'
 import Tabela from "../../components/Tabela"
 import FormCadastro from "../../components/FormCadastro/formCadastro";
+import { Cadastro } from "./styled";
 
-function CadastroFunc() {
+function CadastroVaca() {
   const [vaca, setVaca] = useState({
     id: "",
     prenha: false, // true ? {tempoPrenha: 'date', dataExame: 'date'} : {temBezerro: false},
     bezerroAoPe: false, // true ? {mesNascimento: 'date', sexo: ''} : false,
     idade: 0,
     observacoes: "",
-    IeP: 0,
+    IeP: null,
     // morte: true && 'mandar id pra tabela de falecidos' 
   });
   const [listaVacas, setListaVacas] = useState([]);
   const [edit, setEdit] = useState(false);
+  const { signOut } = useContext(AuthContext)
 
   useEffect(() => {
     async function buscaVacas() {
@@ -64,10 +66,11 @@ function CadastroFunc() {
       />
 
       <br />
+      <button onClick={ () => signOut() }>Fazer logout</button>
       <br />
       <br />
     </Cadastro>
   );
 }
 
-export default CadastroFunc;
+export default CadastroVaca;
