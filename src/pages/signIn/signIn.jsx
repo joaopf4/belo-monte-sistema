@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth';
-import { FormContainer, Input } from '../../components/FormCadastro/styled';
+import { FormContainer, Input } from '../../components/FormVaca/styled';
 
 function SignIn() {
   const [email, setEmail] = useState('');
