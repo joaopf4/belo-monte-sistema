@@ -17,7 +17,7 @@ export default function FormVaca({
       ...prevState,
       [id]: value,
     }));
-    //  console.log(vaca);
+     console.log(listaVacas);
   };
 
   const handleIeP = (e) => {
@@ -75,6 +75,7 @@ export default function FormVaca({
       })
       .catch((error) => {
         toast.error("Não foi possível cadastrar essa vaca.", error);
+        console.log(error)
       });
   };
 
