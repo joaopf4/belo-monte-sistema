@@ -17,8 +17,7 @@ export default function FormVaca({
       ...prevState,
       [id]: value,
     }));
-    console.log(vaca);
-    console.log(new Date('1995').getFullYear()+1)
+    //  console.log(vaca);
   };
 
   const handleIeP = (e) => {

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { TabelaFuncs, TableDiv } from "./styled";
 import { toast } from "react-toastify";
 import firebase from "../../services/firebaseConnection";
@@ -84,6 +85,26 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
     return anoNascimentoVaca;
   }
 
+  function numeroDeOcorrencias(key, value) {
+    let numeroOc = [...listaVacas];
+
+    switch(key) {
+      case 'prenha':
+       numeroOc = [...listaVacas].filter((vaca) => vaca.prenha == value)
+      return console.log(numeroOc.length);
+      case 'bezerroAoPe':
+       numeroOc = [...listaVacas].filter((vaca) => vaca.bezerroAoPe == value)
+      return console.log(numeroOc.length);
+      case 'idade':
+       numeroOc = [...listaVacas].filter((vaca) => vaca.anoNascimento == value)
+      return console.log(numeroOc.length);
+      default: 
+      return console.log(numeroOc.length);
+    }
+
+
+  }
+
   return (
     <TableDiv>
       <TabelaFuncs>
@@ -93,7 +114,6 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
               <button 
                 type="button" 
                 onClick={() => requestSort("id")}
-                ascending={sortConfig.direction === "ascending"}
               >
                 ID
               </button>
@@ -105,7 +125,14 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
                 Prenha
               </button>
             </th>
-            <th>Bezerro ao Pé</th>
+            <th>
+              <button
+                type="button"
+                onClick={() => requestSort("bezerroAoPe")}
+              >
+                Bezerro ao Pé
+              </button>
+            </th>
             <th>
               <button
                 type="button"
@@ -126,10 +153,10 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
             {vacasOrdenadas.map((vaca) => {
               return (
                 <tr key={vaca.id}>
-                  <td>{vaca.id}</td>
-                  <td>{vaca.prenha === true ? "Cheia (sim)" : "Vazia(nao)"}</td>
-                  <td>{vaca.bezerroAoPe === true ? "Sim" : "Não"}</td>
-                  <td>{getAge(vaca.anoNascimento)}</td>
+                  <td onClick={() => numeroDeOcorrencias(vaca.id)}>{vaca.id}</td>
+                  <td onClick={() => numeroDeOcorrencias('prenha', vaca.prenha)}>{vaca.prenha === true ? "Cheia (sim)" : "Vazia(nao)"}</td>
+                  <td onClick={() => numeroDeOcorrencias('bezerroAoPe', vaca.bezerroAoPe)}>{vaca.bezerroAoPe === true ? "Sim" : "Não"}</td>
+                  <td onClick={() => numeroDeOcorrencias('idade', vaca.anoNascimento)}>{getAge(vaca.anoNascimento)}</td>
                   <td>{vaca.observacoes}</td>
                   <td>{vaca.IeP}</td>
                   <td>
