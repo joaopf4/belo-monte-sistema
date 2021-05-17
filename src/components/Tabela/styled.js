@@ -14,6 +14,24 @@ export const TabelaFuncs = styled.table`
     background-color: ${theme.darkBlue};
     color: ${theme.white};
     border: 1px solid #ddd;
+    button{
+      cursor: pointer;
+      border: 2px solid;
+      border-radius: 4px;
+      font-family: inherit;
+      color: inherit;
+      font-weight: 700;
+      background-color: transparent;
+      font-size: inherit;
+      padding: 0.5em;
+      margin-bottom: 1px;
+      :active::after {
+          background-color: red;
+          /* content: '☝️';
+          display: block;
+          margin-left: 1em; */
+        } 
+    }
   }
   tr:nth-child(even) {
     background-color: #f2f2f2;

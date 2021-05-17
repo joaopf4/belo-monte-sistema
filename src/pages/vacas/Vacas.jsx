@@ -2,15 +2,15 @@ import React, { useState, useEffect, useContext } from "react";
 import firebase from "../../services/firebaseConnection";
 import { AuthContext } from '../../contexts/auth'
 import Tabela from "../../components/Tabela"
-import FormCadastro from "../../components/FormCadastro/formCadastro";
+import FormVaca from "../../components/FormVaca/formVaca";
 import { Cadastro } from "./styled";
 
 function CadastroVaca() {
   const [vaca, setVaca] = useState({
-    id: "",
+    id: 0,
     prenha: false, // true ? {tempoPrenha: 'date', dataExame: 'date'} : {temBezerro: false},
     bezerroAoPe: false, // true ? {mesNascimento: 'date', sexo: ''} : false,
-    idade: 0,
+    anoNascimento: 0,
     observacoes: "",
     IeP: null,
     // morte: true && 'mandar id pra tabela de falecidos' 
@@ -31,7 +31,7 @@ function CadastroVaca() {
               id: item.id,
               prenha: item.data().prenha,
               bezerroAoPe: item.data().bezerroAoPe,
-              idade: item.data().idade,
+              anoNascimento: item.data().anoNascimento,
               observacoes: item.data().observacoes,
               IeP: item.data().IeP,
             })
@@ -42,12 +42,13 @@ function CadastroVaca() {
     buscaVacas();
   }, []);
 
+
   return (
     <Cadastro>
       <header>
         <h1>Belo Monte - Tabela de Vacas</h1>
       </header>
-      <FormCadastro 
+      <FormVaca 
           edit={edit}
           vaca={vaca}
           setVaca={setVaca}

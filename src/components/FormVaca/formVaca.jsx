@@ -3,7 +3,7 @@ import { FormContainer, Input, Button } from "./styled";
 import firebase from "../../services/firebaseConnection";
 import { toast } from "react-toastify";
 
-export default function FormCadastro({
+export default function FormVaca({
   edit,
   vaca,
   setVaca,
@@ -17,7 +17,7 @@ export default function FormCadastro({
       ...prevState,
       [id]: value,
     }));
-    console.log(vaca);
+     console.log(listaVacas);
   };
 
   const handleIeP = (e) => {
@@ -53,7 +53,7 @@ export default function FormCadastro({
         id: vaca.id,
         prenha: vaca.prenha,
         bezerroAoPe: vaca.bezerroAoPe,
-        idade: vaca.idade,
+        anoNascimento: vaca.anoNascimento,
         observacoes: vaca.observacoes,
         IeP: vaca.IeP,
       })
@@ -67,7 +67,7 @@ export default function FormCadastro({
           id: "",
           prenha: false, 
           bezerroAoPe: false, 
-          idade: 0,
+          anoNascimento: 0,
           observacoes: "",
           IeP: null,
         });
@@ -75,6 +75,7 @@ export default function FormCadastro({
       })
       .catch((error) => {
         toast.error("Não foi possível cadastrar essa vaca.", error);
+        console.log(error)
       });
   };
 
@@ -88,7 +89,7 @@ export default function FormCadastro({
       id: vaca.id,
       prenha: vaca.prenha,
       bezerroAoPe: vaca.bezerroAoPe,
-      idade: vaca.idade,
+      anoNascimento: vaca.anoNascimento,
       observacoes: vaca.observacoes,
     })
     .then(() => {
@@ -97,7 +98,7 @@ export default function FormCadastro({
         id: "",
         prenha: false, 
         bezerroAoPe: false,
-        idade: 0,
+        anoNascimento: 0,
         observacoes: "",
         IeP: null,
       })
@@ -119,7 +120,7 @@ export default function FormCadastro({
         <input
           name="id"
           required
-          type="text"
+          type="number"
           id="id"
           value={vaca.id}
           onChange={handleChange}
@@ -192,14 +193,17 @@ export default function FormCadastro({
           <label htmlFor="semBezerro">Não</label>
       </div>
 
-      <label htmlFor="idade">Idade (em meses):</label>
+      <label htmlFor="anoNascimento">Ano de nascimento:</label>
       <Input>
         <input
-          name="idade"
-          required
-          type="number"
-          id="idade"
-          value={vaca.idade}
+          name="anoNascimento"
+          required          
+          type="number"  
+          min={new Date().getFullYear() - 20}
+          max={new Date().getFullYear()}
+          step="1" 
+          id="anoNascimento"
+          value={vaca.anoNascimento}
           onChange={handleChange}
         />
       </Input>
