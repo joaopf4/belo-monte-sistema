@@ -1,12 +1,14 @@
 /* eslint-disable eqeqeq */
 import { TabelaFuncs, TableDiv } from "./styled";
 import { toast } from "react-toastify";
+import ToolTip from "../TooTip"
 import firebase from "../../services/firebaseConnection";
 import { useState, useMemo } from "react";
 
 export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
   const [vacasOrdenadas, setVacasOrdenadas] = useState([]);
   const [sortConfig, setSortConfig] = useState(null);
+  const [ocorrencias, setOcorrencias] = useState(null)
 
   useMemo(() => {
     let vacasSortidas = [...listaVacas];
@@ -85,24 +87,26 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
     return anoNascimentoVaca;
   }
 
+
+  let numeroOc = [...listaVacas];
   function numeroDeOcorrencias(key, value) {
-    let numeroOc = [...listaVacas];
 
     switch(key) {
       case 'prenha':
        numeroOc = [...listaVacas].filter((vaca) => vaca.prenha == value)
-      return console.log(numeroOc.length);
+       setOcorrencias(numeroOc.length)
+       return ocorrencias;
       case 'bezerroAoPe':
        numeroOc = [...listaVacas].filter((vaca) => vaca.bezerroAoPe == value)
-      return console.log(numeroOc.length);
+       setOcorrencias(numeroOc.length)
+       return ocorrencias;
       case 'idade':
        numeroOc = [...listaVacas].filter((vaca) => vaca.anoNascimento == value)
-      return console.log(numeroOc.length);
+       setOcorrencias(numeroOc.length)
+       return ocorrencias;
       default: 
       return console.log(numeroOc.length);
     }
-
-
   }
 
   return (
@@ -153,10 +157,26 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
             {vacasOrdenadas.map((vaca) => {
               return (
                 <tr key={vaca.id}>
-                  <td onClick={() => numeroDeOcorrencias(vaca.id)}>{vaca.id}</td>
-                  <td onClick={() => numeroDeOcorrencias('prenha', vaca.prenha)}>{vaca.prenha === true ? "Cheia (sim)" : "Vazia(nao)"}</td>
-                  <td onClick={() => numeroDeOcorrencias('bezerroAoPe', vaca.bezerroAoPe)}>{vaca.bezerroAoPe === true ? "Sim" : "Não"}</td>
-                  <td onClick={() => numeroDeOcorrencias('idade', vaca.anoNascimento)}>{getAge(vaca.anoNascimento)}</td>
+                  
+                  <td onClick={() => numeroDeOcorrencias('', vaca.id)}>
+                    <ToolTip toolTipText={numeroOc.length + " Vacas no total"}>{vaca.id}</ToolTip> 
+                  </td>
+                  
+                  <td onMouseOver={() => numeroDeOcorrencias('prenha', vaca.prenha)}>
+                    <ToolTip toolTipText={ocorrencias + (vaca.prenha === true ? " Vacas cheias" : " Vacas vazias")}>
+                      {vaca.prenha === true ? "Cheia" : "Vazia"}
+                    </ToolTip> 
+                  </td>
+                  <td onMouseOver={() => numeroDeOcorrencias('bezerroAoPe', vaca.bezerroAoPe)}>
+                    <ToolTip toolTipText={ocorrencias + (vaca.bezerroAoPe === true ? " Vacas com bezerro" : " Vacas sem bezerro")}>
+                      {vaca.bezerroAoPe === true ? "Sim" : "Não"}
+                    </ToolTip>
+                  </td>
+                  <td onMouseOver={() => numeroDeOcorrencias('idade', vaca.anoNascimento)}>
+                    <ToolTip toolTipText={ocorrencias + " Vaca(s) com " + getAge(vaca.anoNascimento) + " anos"}>
+                      {getAge(vaca.anoNascimento)}
+                    </ToolTip>
+                  </td>
                   <td>{vaca.observacoes}</td>
                   <td>{vaca.IeP}</td>
                   <td>
