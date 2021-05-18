@@ -164,12 +164,12 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
                   </td>
                   
                   <td onMouseOver={() => numeroDeOcorrencias('prenha', vaca.prenha)}>
-                    <ToolTip toolTipText={ocorrencias + (vaca.prenha === true ? " Vacas cheias no total" : " Vacas vazias no total")}>
+                    <ToolTip toolTipText={ocorrencias + (vaca.prenha === true ? " Vacas cheias" : " Vacas vazias")}>
                       {vaca.prenha === true ? "Cheia" : "Vazia"}
                     </ToolTip> 
                   </td>
                   <td onMouseOver={() => numeroDeOcorrencias('bezerroAoPe', vaca.bezerroAoPe)}>
-                    <ToolTip toolTipText={ocorrencias + " Vacas no total"}>
+                    <ToolTip toolTipText={ocorrencias + (vaca.bezerroAoPe === true ? " Vacas com bezerro" : " Vacas sem bezerro")}>
                       {vaca.bezerroAoPe === true ? "Sim" : "Não"}
                     </ToolTip>
                   </td>
