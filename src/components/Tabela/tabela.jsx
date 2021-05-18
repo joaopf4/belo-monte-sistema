@@ -1,7 +1,6 @@
 /* eslint-disable eqeqeq */
 import { TabelaFuncs, TableDiv } from "./styled";
 import { toast } from "react-toastify";
-import 'reactjs-popup/dist/index.css';
 import ToolTip from "../TooTip"
 import firebase from "../../services/firebaseConnection";
 import { useState, useMemo } from "react";
