@@ -4,7 +4,7 @@ import styled from "styled-components";
 const ToolTipText = styled("span")({
   visibility: "hidden",
   width: "120px",
-  backgroundColor: "#000",
+  backgroundColor: "rgba(0, 0, 0, 0.8)",
   color: "#fff",
   textAlign: "center",
   borderRadius: "6px",
