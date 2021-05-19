@@ -190,8 +190,8 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
                           setEdit(false);
                           setVaca({
                             id: "",
-                            prenha: false,
-                            bezerroAoPe: false,
+                            prenha: null,
+                            bezerroAoPe: null,
                             anoNascimento: 0,
                             observacoes: "",
                             IeP: null,

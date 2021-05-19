@@ -17,7 +17,8 @@ export default function FormVaca({
       ...prevState,
       [id]: value,
     }));
-     console.log(listaVacas);
+     console.log(vaca);
+     
   };
 
   const handleIeP = (e) => {
@@ -133,6 +134,7 @@ export default function FormVaca({
         <input
           type="radio"
           name="prenha"
+          checked={vaca.prenha === true}
           required
           id="prenha"
           onChange={() => setVaca((prevState) => ({
@@ -144,6 +146,7 @@ export default function FormVaca({
         <input
           type="radio"
           name="prenha"
+          checked={vaca.prenha === false}
           required
           id="nãoprenha"
           onChange={() => setVaca((prevState) => ({
@@ -159,6 +162,7 @@ export default function FormVaca({
         <input
           type="radio"
           name="temBezerro"
+          checked={vaca.bezerroAoPe === true}
           required
           id="bezerro"
           onChange={() => setVaca((prevState) => ({
@@ -183,6 +187,7 @@ export default function FormVaca({
         <input
           type="radio"
           name="temBezerro"
+          checked={vaca.bezerroAoPe === false}
           required
           id="semBezerro"
           onChange={() => setVaca((prevState) => ({

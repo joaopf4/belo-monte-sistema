@@ -8,8 +8,8 @@ import { Cadastro } from "./styled";
 function CadastroVaca() {
   const [vaca, setVaca] = useState({
     id: 0,
-    prenha: false, // true ? {tempoPrenha: 'date', dataExame: 'date'} : {temBezerro: false},
-    bezerroAoPe: false, // true ? {mesNascimento: 'date', sexo: ''} : false,
+    prenha: null, // true ? {tempoPrenha: 'date', dataExame: 'date'} : {temBezerro: false},
+    bezerroAoPe: null, // true ? {mesNascimento: 'date', sexo: ''} : false,
     anoNascimento: 0,
     observacoes: "",
     IeP: null,
