@@ -17,7 +17,7 @@ export default function FormVaca({
       ...prevState,
       [id]: value,
     }));
-    //  console.log(listaVacas);
+     console.log(listaVacas);
      
   };
 
@@ -116,7 +116,7 @@ export default function FormVaca({
     <FormContainer>
     <form onSubmit={!edit ? cadastraVaca : efetuaEdicao}>
       <label htmlFor="id">ID:</label>
-      <Input>
+      <Input width="100%">
         <input
           name="id"
           required
@@ -198,7 +198,7 @@ export default function FormVaca({
       </div>
 
       <label htmlFor="anoNascimento">Ano de nascimento:</label>
-      <Input>
+      <Input width="100%" >
         <input
           name="anoNascimento"
           required          
@@ -212,7 +212,7 @@ export default function FormVaca({
         />
       </Input>
       <label htmlFor="observacoes">Observações</label>
-      <Input>
+      <Input width="100%" marginBottom="40px">
         <input
           name="observacoes"
           type="text"

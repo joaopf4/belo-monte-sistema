@@ -42,6 +42,7 @@ export const TabelaFuncs = styled.table`
   td {
     padding: 10px 6px 10px 6px;
     border: 1px solid #ddd;
+    background-color: ${(props) => props.background};
     button {
       display: block;
       margin: auto;
