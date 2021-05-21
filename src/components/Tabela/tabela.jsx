@@ -12,13 +12,13 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
 
   useMemo(() => {
     let vacasSortidas = [...listaVacas];
-
+    
     if (sortConfig !== null) {
       vacasSortidas.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        if (Number(a[sortConfig.key]) < Number(b[sortConfig.key])) {
           return sortConfig.direction === "ascending" ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (Number(a[sortConfig.key]) > Number(b[sortConfig.key])) {
           return sortConfig.direction === "ascending" ? 1 : -1;
         }
         return 0;
@@ -34,10 +34,10 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
       sortConfig &&
       sortConfig.key === key &&
       sortConfig.direction === "ascending"
-    ) {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
+      ) {
+        direction = "descending";
+      }
+      setSortConfig({ key, direction });
   };
 
   async function excluirVaca(id) {
