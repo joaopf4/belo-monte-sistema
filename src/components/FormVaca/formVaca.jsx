@@ -17,13 +17,13 @@ export default function FormVaca({
       ...prevState,
       [id]: value,
     }));
-     console.log(listaVacas);
+    //  console.log(listaVacas);
+     
   };
 
   const handleIeP = (e) => {
     const today = new Date();
     const lastBabyBorn = new Date(e.target.value);
-    console.log('hoje--->', today, 'nasc bezerro --->', lastBabyBorn)
     let IePmilisecs = today - lastBabyBorn;
     const IePdays = ((IePmilisecs/(60*60*24*1000)) % 365).toFixed(0);
 
@@ -64,14 +64,14 @@ export default function FormVaca({
         .doc(vaca.id)
         .get()
         setVaca({
-          id: "",
-          prenha: false, 
-          bezerroAoPe: false, 
+          id: 0,
+          prenha: null, 
+          bezerroAoPe: null, 
           anoNascimento: 0,
           observacoes: "",
           IeP: null,
         });
-        toast.success("Vaca inserida com sucesso!");
+        toast.success(`Vaca ${vaca.id} inserida com sucesso!`);
       })
       .catch((error) => {
         toast.error("Não foi possível cadastrar essa vaca.", error);
@@ -95,7 +95,7 @@ export default function FormVaca({
     .then(() => {
       handleIeP(e)
       setVaca({
-        id: "",
+        id: 0,
         prenha: false, 
         bezerroAoPe: false,
         anoNascimento: 0,
@@ -133,6 +133,7 @@ export default function FormVaca({
         <input
           type="radio"
           name="prenha"
+          checked={vaca.prenha === true}
           required
           id="prenha"
           onChange={() => setVaca((prevState) => ({
@@ -144,6 +145,7 @@ export default function FormVaca({
         <input
           type="radio"
           name="prenha"
+          checked={vaca.prenha === false}
           required
           id="nãoprenha"
           onChange={() => setVaca((prevState) => ({
@@ -159,6 +161,7 @@ export default function FormVaca({
         <input
           type="radio"
           name="temBezerro"
+          checked={vaca.bezerroAoPe === true}
           required
           id="bezerro"
           onChange={() => setVaca((prevState) => ({
@@ -183,6 +186,7 @@ export default function FormVaca({
         <input
           type="radio"
           name="temBezerro"
+          checked={vaca.bezerroAoPe === false}
           required
           id="semBezerro"
           onChange={() => setVaca((prevState) => ({
