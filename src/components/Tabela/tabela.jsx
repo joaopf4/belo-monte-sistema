@@ -156,7 +156,7 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
           <tbody>
             {vacasOrdenadas.map((vaca) => {
               return (
-                <tr key={vaca.id} id={vaca.id} style={{background: 'green',}}>
+                <tr key={vaca.id} id={vaca.id}>
                   
                   <td onClick={() => numeroDeOcorrencias('', vaca.id)}  >
                     <ToolTip toolTipText={numeroOc.length + " Vacas no total"}>{vaca.id}</ToolTip> 

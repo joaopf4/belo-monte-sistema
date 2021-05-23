@@ -1,34 +1,52 @@
 /* eslint-disable eqeqeq */
-import { SearchBarDiv } from "./styled";
-import { toast } from "react-toastify";
-import ToolTip from "../TooTip"
-import firebase from "../../services/firebaseConnection";
 import { useState, useEffect, useContext } from "react";
 import {  Input } from "../FormVaca/styled";
-import { Link } from "react-scroll";
+import { toast } from "react-toastify";
+import { SearchBarDiv, SearchBtn } from "./styled";
 
 
-export default function SearchBar({ listaVacas, setEdit, setVaca }) {
+import firebase from "../../services/firebaseConnection";
+
+
+export default function SearchBar({ listaVacas, animal, setEdit, setVaca, edit }) {
   const [searchId, setSearchId] = useState("");
-  // const [foundVaca, setFoundVaca] = useContext();
 
   const handleChange = event => {
     setSearchId(event.target.value);
   };
 
-  function acharVaca() {
-    let vacaId = listaVacas.find(vaca => vaca.id === searchId);
-    console.log(vacaId)
-    // vacaId !== undefined && setFoundVaca(true)
-
+  async function editarVaca(id) {
+    const vacaId = listaVacas.some(
+      (vacaBanco) => vacaBanco.id === id
+    );
+    if(!vacaId) {
+      toast.warning(`Nenhuma vaca com id ${id} encontrada.`);
+      return;
+    }
+      console.log(id)
+      setEdit(true);
+      setSearchId('');
+      await firebase
+        .firestore()
+        .collection("vacas")
+        .doc(id)
+        .get()
+        .then((snapshot) => {
+          setVaca({
+            id: snapshot.data().id,
+            prenha: snapshot.data().prenha,
+            bezerroAoPe: snapshot.data().bezerroAoPe,
+            anoNascimento: snapshot.data().anoNascimento,
+            observacoes: snapshot.data().observacoes,
+          });
+        });
   }
-  
 
   return (
     <SearchBarDiv>
       <div>
         <h2>
-          Suas vacas:
+          {animal}
         </h2>
       </div>
       <div>
@@ -42,16 +60,27 @@ export default function SearchBar({ listaVacas, setEdit, setVaca }) {
             onChange={handleChange}
             value={searchId}
           />
-          <Link
-            activeClass="active"
-            to={searchId}
-            // spy={true}
-            smooth={true}
-            offset={-10}
-            duration={900}
-          >
-            <button onClick={acharVaca}>Go</button>
-          </Link>
+
+          {!edit ? (
+            <SearchBtn onClick={(() => editarVaca(searchId))}>Edit</SearchBtn>
+          ):(
+            <SearchBtn
+              onClick={() => {
+                setEdit(false);
+                setVaca({
+                  id: "",
+                  prenha: null,
+                  bezerroAoPe: null,
+                  anoNascimento: 0,
+                  observacoes: "",
+                  IeP: null,
+                });
+              }}
+            >
+              X
+            </SearchBtn>
+          )          
+          }
         </Input>
       </div>
 

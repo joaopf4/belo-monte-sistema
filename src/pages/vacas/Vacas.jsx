@@ -60,6 +60,10 @@ function CadastroVaca() {
       <SearchBar
         listaVacas={listaVacas}
         vaca={vaca}
+        animal="Suas Vacas:"
+        setEdit={setEdit}
+        edit={edit}
+        setVaca={setVaca}
       />
 
       <Tabela 

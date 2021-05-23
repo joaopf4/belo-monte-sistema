@@ -2,6 +2,7 @@ import React from "react";
 import { FormContainer, Input, Button } from "./styled";
 import firebase from "../../services/firebaseConnection";
 import { toast } from "react-toastify";
+import { scroller } from "react-scroll";
 
 export default function FormVaca({
   edit,
@@ -17,7 +18,7 @@ export default function FormVaca({
       ...prevState,
       [id]: value,
     }));
-     console.log(listaVacas);
+    //  console.log(vacaId);
      
   };
 
@@ -31,7 +32,15 @@ export default function FormVaca({
       ...prevState,
       IeP: IePdays,
     }));
-    
+  }
+
+  function scrollToVaca() {
+    scroller.scrollTo(`${vaca.id}`, {
+      duration: 800,
+      delay: 200,
+      smooth: true,
+      offset: -20
+    })
   }
 
   async function cadastraVaca(e) {
@@ -63,6 +72,7 @@ export default function FormVaca({
         .collection("vacas")
         .doc(vaca.id)
         .get()
+        scrollToVaca();
         setVaca({
           id: 0,
           prenha: null, 
@@ -79,6 +89,10 @@ export default function FormVaca({
       });
   };
 
+
+
+
+
   async function efetuaEdicao(e) {
     e.preventDefault();
     await firebase
@@ -93,6 +107,7 @@ export default function FormVaca({
       observacoes: vaca.observacoes,
     })
     .then(() => {
+      scrollToVaca();
       handleIeP(e)
       setVaca({
         id: 0,
@@ -114,7 +129,7 @@ export default function FormVaca({
 
   return (
     <FormContainer>
-    <form onSubmit={!edit ? cadastraVaca : efetuaEdicao}>
+    <form onSubmit={(!edit ? cadastraVaca : efetuaEdicao)}>
       <label htmlFor="id">ID:</label>
       <Input width="100%">
         <input
