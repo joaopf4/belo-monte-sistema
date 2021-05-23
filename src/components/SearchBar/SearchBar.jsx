@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 import {  Input } from "../FormVaca/styled";
 import { toast } from "react-toastify";
 import { SearchBarDiv, SearchBtn } from "./styled";
