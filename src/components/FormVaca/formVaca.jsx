@@ -89,10 +89,6 @@ export default function FormVaca({
       });
   };
 
-
-
-
-
   async function efetuaEdicao(e) {
     e.preventDefault();
     await firebase
@@ -111,8 +107,8 @@ export default function FormVaca({
       handleIeP(e)
       setVaca({
         id: 0,
-        prenha: false, 
-        bezerroAoPe: false,
+        prenha: null, 
+        bezerroAoPe: null,
         anoNascimento: 0,
         observacoes: "",
         IeP: null,
