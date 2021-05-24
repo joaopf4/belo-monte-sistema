@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 import { TabelaFuncs, TableDiv } from "./styled";
 import { toast } from "react-toastify";
+import { scroller } from "react-scroll";
 import ToolTip from "../TooTip"
 import firebase from "../../services/firebaseConnection";
 import { useState, useMemo } from "react";
@@ -62,8 +63,18 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
     }
   }
 
+  function scrollToForm() {
+    scroller.scrollTo(`form`, {
+      duration: 400,
+      delay: 0,
+      smooth: true,
+      offset: -20
+    })
+  }
+
   async function editarVaca(id) {
     setEdit(true);
+    scrollToForm();
     await firebase
       .firestore()
       .collection("vacas")

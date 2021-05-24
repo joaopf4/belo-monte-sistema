@@ -106,7 +106,7 @@ export default function FormVaca({
       scrollToVaca();
       handleIeP(e)
       setVaca({
-        id: 0,
+        id: "",
         prenha: null, 
         bezerroAoPe: null,
         anoNascimento: 0,
@@ -125,7 +125,7 @@ export default function FormVaca({
 
   return (
     <FormContainer>
-    <form onSubmit={(!edit ? cadastraVaca : efetuaEdicao)}>
+    <form onSubmit={(!edit ? cadastraVaca : efetuaEdicao)} name='form'>
       <label htmlFor="id">ID:</label>
       <Input width="100%">
         <input

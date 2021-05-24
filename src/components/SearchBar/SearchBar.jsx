@@ -1,7 +1,8 @@
 /* eslint-disable eqeqeq */
 import { useState } from "react";
-import {  Input } from "../FormVaca/styled";
 import { toast } from "react-toastify";
+import { scroller } from "react-scroll";
+import {  Input } from "../FormVaca/styled";
 import { SearchBarDiv, SearchBtn } from "./styled";
 
 
@@ -15,6 +16,17 @@ export default function SearchBar({ listaVacas, animal, setEdit, setVaca, edit }
     setSearchId(event.target.value);
   };
 
+
+  function scrollToForm() {
+    scroller.scrollTo(`form`, {
+      duration: 400,
+      delay: 0,
+      smooth: true,
+      offset: -20
+    })
+  }
+
+
   async function editarVaca(id) {
     const vacaId = listaVacas.some(
       (vacaBanco) => vacaBanco.id === id
@@ -23,8 +35,8 @@ export default function SearchBar({ listaVacas, animal, setEdit, setVaca, edit }
       toast.warning(`Nenhuma vaca com id ${id} encontrada.`);
       return;
     }
-      console.log(id)
       setEdit(true);
+      scrollToForm();
       setSearchId('');
       await firebase
         .firestore()
