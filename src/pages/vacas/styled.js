@@ -27,9 +27,6 @@ export const Cadastro = styled.div`
       width: fit-content;
     }
   }
-  h2 {
-    margin: 40px 0;
-  }
   h3 {
     width: 70%;
   }

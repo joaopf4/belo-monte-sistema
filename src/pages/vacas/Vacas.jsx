@@ -3,6 +3,7 @@ import firebase from "../../services/firebaseConnection";
 import { AuthContext } from '../../contexts/auth'
 import Tabela from "../../components/Tabela"
 import FormVaca from "../../components/FormVaca/formVaca";
+import SearchBar from "../../components/SearchBar/";
 import { Cadastro } from "./styled";
 
 function CadastroVaca() {
@@ -52,12 +53,18 @@ function CadastroVaca() {
           edit={edit}
           vaca={vaca}
           setVaca={setVaca}
-          // calculaIR={calculaIR}
           setEdit={setEdit}
           listaVacas={listaVacas}
       />
 
-      <h2>Suas vacas: </h2>
+      <SearchBar
+        listaVacas={listaVacas}
+        vaca={vaca}
+        animal="Suas Vacas:"
+        setEdit={setEdit}
+        edit={edit}
+        setVaca={setVaca}
+      />
 
       <Tabela 
         listaVacas={listaVacas}

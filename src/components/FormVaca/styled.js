@@ -10,7 +10,7 @@ export const FormContainer = styled.div`
   }
 `;
 export const Input = styled.div`
-  width: 100%;
+  width: ${(props) => props.width};
   height: 40px;
   border: 2px solid ${theme.black};
   box-shadow: ${theme.black} 4px 4px;
@@ -18,17 +18,20 @@ export const Input = styled.div`
   margin: 0px 0px 22px 0px;
   display: flex;
   align-items: inherit;
-  flex-direction: column;
   justify-content: center;
   background-color: white;
   :last-of-type {
-    margin-bottom: 40px;
+    margin-bottom: ${(props) => props.marginBottom};
   }
+  margin: ${(props) => props.margin};
   input {
     border: none;
     outline: none;
     width: 100%;
     font-size: 1.3rem;
+    span{
+      color: black;
+    }
   }
   p {
     font-size: 1.2rem;
@@ -42,10 +45,11 @@ export const Button = styled.button`
   box-shadow: rgba(17, 16, 16, 1) 4px 4px;
   outline: none;
   padding: 0 20px;
+  background-color: ${theme.darkBlue};
+  color: white;
   display: flex;
   align-items: inherit;
   font-weight: 600;
-  background-color: white;
   font-size: 1.3rem;
   :hover {
     cursor: pointer;

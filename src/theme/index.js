@@ -11,7 +11,7 @@ export const GlobalStyle = createGlobalStyle`
     overflow-y: overlay;
     width: 100vw; 
     padding-left: 0px !important;
-    }
+  }
 
   * {
     box-sizing: border-box;
@@ -20,11 +20,11 @@ export const GlobalStyle = createGlobalStyle`
 
 `;
 export const theme = {
-    white: "#fffffb",
-    darkBlue: "#185785",
-    orange: "#f3a52e",
-    lightBlue: "#dde3e6",
-    lightOrange: "#f3d7b6",
-    black:"#111010",
-    creamWhite: "#f2f2f2"
-}
+  white: "#fffffb",
+  darkBlue: "#185785",
+  orange: "#f3a52e",
+  lightBlue: "#185785d6",
+  lightOrange: "#f3d7b6",
+  black: "#111010",
+  creamWhite: "#f2f2f2",
+};
