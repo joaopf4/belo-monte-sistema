@@ -41,12 +41,12 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
   };
 
   async function excluirVaca(id) {
-    if (window.confirm("Deseja exlcuir esta vaca dos seus dados?")) {
+    if (window.confirm(`Deseja exlcuir a vaca ${id} dos seus dados?`)) {
       setEdit(false);
       setVaca({
         id: "",
-        prenha: false,
-        bezerroAoPe: false,
+        prenha: null,
+        bezerroAoPe: null,
         anoNascimento: 0,
         observacoes: "",
         IeP: null,
@@ -57,7 +57,7 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
         .doc(id)
         .delete()
         .then(() => {
-          toast.info("Vaca excluída");
+          toast.info(`Vaca ${id} excluída`);
         });
     }
   }
@@ -86,7 +86,6 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
 
     return anoNascimentoVaca;
   }
-
 
   let numeroOc = [...listaVacas];
   function numeroDeOcorrencias(key, value) {

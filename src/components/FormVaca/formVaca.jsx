@@ -74,7 +74,7 @@ export default function FormVaca({
         .get()
         scrollToVaca();
         setVaca({
-          id: 0,
+          id: "",
           prenha: null, 
           bezerroAoPe: null, 
           anoNascimento: 0,
@@ -113,12 +113,12 @@ export default function FormVaca({
         observacoes: "",
         IeP: null,
       })
-      toast.success('Vaca atualizada com sucesso');
+      toast.success(`Vaca ${vaca.id} atualizada com sucesso`);
       setEdit(!edit);
     })
     .catch((error) => {
       console.log(error)
-      toast.error('Erro ao atualizar a vaca. O seu id não pode ser alterado', error);
+      toast.error(`Erro ao atualizar vaca ${vaca.id}. O seu id não pode ser alterado`, error);
     })
   }
 
