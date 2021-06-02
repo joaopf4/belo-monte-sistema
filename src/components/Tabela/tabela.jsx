@@ -91,11 +91,37 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
       });
   }
 
-  function getAge(anoNascimento) {
-    const today = new Date().getFullYear();
-    const anoNascimentoVaca = today - anoNascimento;
+  function minAge(insertDate) {
+    let date = insertDate;
+    let mm = date.getMonth()+1; //January is 0!
+    let yyyy = date.getFullYear();
 
-    return anoNascimentoVaca;
+    if(mm<10){
+      mm='0'+mm
+    } 
+
+    date = yyyy+'-'+mm;
+    
+    return date;
+  }
+
+  function calcIdadeMeses(startDate, endDate) {
+    let start = startDate.split('-');
+    let end = endDate.split('-');
+    let startYear = parseInt(start[0]);
+    let endYear = parseInt(end[0]);
+    let dates = [];
+
+    for(let i = startYear; i <= endYear; i++) {
+      let endMonth = i !== endYear ? 11 : parseInt(end[1]) - 1;
+      let startMon = i === startYear ? parseInt(start[1])-1 : 0;
+      for(let j = startMon; j <= endMonth; j = j > 12 ? j % 12 || 11 : j+1) {
+        var month = j+1;
+        var displayMonth = month < 10 ? '0'+month : month;
+        dates.push([i, displayMonth, '01'].join('-'));
+      }
+    }
+    return dates.length;
   }
 
   let numeroOc = [...listaVacas];
@@ -152,7 +178,7 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
                 type="button"
                 onClick={() => requestSort("anoNascimento")}
               >
-                Idade (anos)
+                Idade (meses)
               </button>
             </th>
             <th>Observações</th>
@@ -183,8 +209,8 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
                     </ToolTip>
                   </td>
                   <td onMouseOver={() => numeroDeOcorrencias('idade', vaca.anoNascimento)}>
-                    <ToolTip toolTipText={ocorrencias + " Vaca(s) com " + getAge(vaca.anoNascimento) + " anos"}>
-                      {getAge(vaca.anoNascimento)}
+                    <ToolTip toolTipText={ocorrencias + " Vaca(s) com " + calcIdadeMeses(vaca.anoNascimento, minAge(new Date())) + " meses"}>
+                      {calcIdadeMeses(vaca.anoNascimento, minAge(new Date()))}
                     </ToolTip>
                   </td>
                   <td>{vaca.observacoes}</td>

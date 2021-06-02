@@ -1,3 +1,4 @@
+// import { useState } from "react";
 import React from "react";
 import { FormContainer, Input, Button } from "./styled";
 import firebase from "../../services/firebaseConnection";
@@ -18,9 +19,12 @@ export default function FormVaca({
       ...prevState,
       [id]: value,
     }));
-    //  console.log(vacaId);
+    //  console.log(dateRange(vaca.anoNascimento, minAge(new Date())).length);
+    console.log(vaca)
      
   };
+
+  // const [idade, setIdade] = useState(0);
 
   const handleIeP = (e) => {
     const today = new Date();
@@ -120,6 +124,20 @@ export default function FormVaca({
       console.log(error)
       toast.error(`Erro ao atualizar vaca ${vaca.id}. O seu id não pode ser alterado`, error);
     })
+  } 
+
+  function minAge(insertDate) {
+    let date = insertDate;
+    let mm = date.getMonth()+1; //January is 0!
+    let yyyy = date.getFullYear();
+
+    if(mm<10){
+      mm='0'+mm
+    } 
+
+    date = yyyy+'-'+mm;
+    
+    return date;
   }
 
 
@@ -208,14 +226,14 @@ export default function FormVaca({
           <label htmlFor="semBezerro">Não</label>
       </div>
 
-      <label htmlFor="anoNascimento">Ano de nascimento:</label>
+      <label htmlFor="anoNascimento">Ano e mês de nascimento:</label>
       <Input width="100%" >
         <input
           name="anoNascimento"
           required          
-          type="number"  
-          min={new Date().getFullYear() - 20}
-          max={new Date().getFullYear()}
+          type="month"  
+          min={`${(parseInt(minAge(new Date()).split('-')[0])-20).toString()}-${minAge(new Date()).split('-')[1]}`}
+          max={minAge(new Date())}
           step="1" 
           id="anoNascimento"
           value={vaca.anoNascimento}
