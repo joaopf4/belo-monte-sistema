@@ -110,7 +110,7 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
     let end = endDate.split('-');
     let startYear = parseInt(start[0]);
     let endYear = parseInt(end[0]);
-    let dates = [];
+    let months = [];
 
     for(let i = startYear; i <= endYear; i++) {
       let endMonth = i !== endYear ? 11 : parseInt(end[1]) - 1;
@@ -118,10 +118,17 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
       for(let j = startMon; j <= endMonth; j = j > 12 ? j % 12 || 11 : j+1) {
         var month = j+1;
         var displayMonth = month < 10 ? '0'+month : month;
-        dates.push([i, displayMonth, '01'].join('-'));
+        months.push([i, displayMonth, '01'].join('-'));
       }
     }
-    return dates.length;
+    return months.length;
+  }
+
+  function transformaIdadeAnosEMeses(totalMeses) {
+    let anos = Math.floor(totalMeses/12);
+    let meses = totalMeses % 12
+
+    return `${anos} anos e ${meses} meses`;
   }
 
   let numeroOc = [...listaVacas];
@@ -210,7 +217,7 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
                   </td>
                   <td onMouseOver={() => numeroDeOcorrencias('idade', vaca.anoNascimento)}>
                     <ToolTip toolTipText={ocorrencias + " Vaca(s) com " + calcIdadeMeses(vaca.anoNascimento, minAge(new Date())) + " meses"}>
-                      {calcIdadeMeses(vaca.anoNascimento, minAge(new Date()))}
+                      {transformaIdadeAnosEMeses(calcIdadeMeses(vaca.anoNascimento, minAge(new Date())))}
                     </ToolTip>
                   </td>
                   <td>{vaca.observacoes}</td>
@@ -239,7 +246,7 @@ export default function Tabela({ listaVacas, edit, setEdit, setVaca }) {
                     )}
                   </td>
                   <td>
-                    <button>Morreu</button>
+                    <button onClick={() => console.log('teste aqui funções novas')}>Morreu</button>
                   </td>
                   <td>
                     <button onClick={() => excluirVaca(vaca.id)}>X</button>
